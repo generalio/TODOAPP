@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
- * @Desc : 类的描述
+ * @Desc : Main的ViewModel
  * @Author : zzx
  * @Date : 2025/5/1 16:35
  */

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/parent_text_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/item_parent_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:buttonTint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_parent_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="一级列表title"
+            android:textColor="@color/level_one_font_color"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@+id/item_parent_check"
+            app:layout_constraintStart_toEndOf="@+id/item_parent_check"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_parent_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="desc"
+            android:textColor="@color/level_four_font_color"
+            android:textSize="16dp"
+            app:layout_constraintStart_toEndOf="@+id/item_parent_check"
+            app:layout_constraintTop_toBottomOf="@+id/tv_parent_title" />
+
+        <ImageView
+            android:id="@+id/iv_parent_expand"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="expand"
+            android:src="@drawable/ic_folder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

@@ -43,10 +43,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setNavigation() {
-        val fragmentList: List<Fragment> = listOf(HomeFragment(), TimeFragment(), PersonFragment())
+        //将fragment添加进适配器
+        val fragmentList: MutableList<Fragment> = ArrayList()
+        fragmentList.add(HomeFragment())
+        fragmentList.add(TimeFragment())
+        fragmentList.add(PersonFragment())
         viewPager2.adapter = VP2Adapter(this, fragmentList)
         viewPager2.isUserInputEnabled = false
-
+        navigationView.selectedItemId = R.id.bottom_home
         navigationView.itemIconTintList = null
         navigationView.setOnItemSelectedListener {
             when(it.itemId) {
@@ -65,6 +69,12 @@ class MainActivity : BaseActivity() {
             }
             false
         }
-        navigationView.selectedItemId = R.id.bottom_home
+        viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                navigationView.menu.getItem(position).isChecked = true
+            }
+        })
     }
+
 }

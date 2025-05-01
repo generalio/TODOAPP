@@ -37,23 +37,27 @@ interface UserDao {
 
     //添加父任务
     @Insert
-    fun insertParentTask(parentTask: ParentTask)
+    fun insertParentTask(parentTask: ParentTask) : Single<Long>
 
     //更新父任务
     @Update
-    fun updateParentTask(parentTask: ParentTask)
+    fun updateParentTask(parentTask: ParentTask) : Single<Int>
 
     //更新父任务的置顶状态
     @Query("update parent_task set top = case when top = 0 then 1 else 0 end where id = :taskId")
-    fun updateTopStatus(taskId: Int)
+    fun updateTopStatus(taskId: Int) : Single<Int>
 
     //更新父任务的完成状态
     @Query("update parent_task set finish = case when finish = 0 then 1 else 0 end where id = :taskId")
-    fun finishParentTask(taskId: Int)
+    fun finishParentTask(taskId: Int) : Single<Int>
+
+    //更新展开状态
+    @Query("update parent_task set expand = case when expand = 0 then 1 else 0 end where id = :taskId")
+    fun changeExpandStatus(taskId: Int) : Single<Int>
 
     //删除父任务
     @Delete
-    fun deleteParentTask(parentTask: ParentTask)
+    fun deleteParentTask(parentTask: ParentTask) : Single<Int>
 
     //查找所有父任务
     @Query("select * from parent_task  where user_id = :userId order by finish, top, id")

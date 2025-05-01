@@ -1,13 +1,42 @@
 package com.generals.todoapp.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.generals.todoapp.R
+import com.generals.todoapp.model.bean.ParentTask
+import com.generals.todoapp.ui.CustomDialog
+import com.generals.todoapp.ui.activity.MainActivity
+import com.generals.todoapp.ui.adapter.HomeTaskRecyclerViewAdapter
+import com.generals.todoapp.viewmodel.HomeViewModel
+import com.generals.todoapp.viewmodel.MainViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class HomeFragment : Fragment() {
+
+    private var userId : Int = 0
+
+    private val viewModel : HomeViewModel by viewModels()
+    private val mainViewModel : MainViewModel by activityViewModels()
+    private lateinit var mainActivity : MainActivity
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var floatButton: FloatingActionButton
+    private lateinit var adapter: HomeTaskRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,6 +48,66 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        mainActivity = activity as MainActivity
+
+        mainViewModel.livedataUser.observe(viewLifecycleOwner) { user ->
+            userId = user.id
+            loadPassage()
+        }
+
+        recyclerView = view.findViewById(R.id.rv_home)
+        recyclerView.layoutManager = LinearLayoutManager(mainActivity)
+        recyclerView.addItemDecoration(DividerItemDecoration(mainActivity, RecyclerView.VERTICAL))
+        floatButton = view.findViewById(R.id.home_floatButton)
+        adapter = HomeTaskRecyclerViewAdapter()
+        recyclerView.adapter = adapter
+
+        initEvent()
+
+        viewModel.livedataIsChanged.observe(viewLifecycleOwner) {
+            loadPassage()
+        }
+
+    }
+
+
+    @SuppressLint("InflateParams")
+    private fun initEvent() {
+        floatButton.setOnClickListener {
+            val editView = LayoutInflater.from(mainActivity).inflate(R.layout.layout_edit, null)!!
+            val dialog = CustomDialog()
+                .newInstance()
+                .setDialogHeight(1000)
+                .setCustomView(editView)
+            val ft: FragmentTransaction =
+                mainActivity.supportFragmentManager.beginTransaction()
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //设置过渡动画
+            dialog.show(ft, "DialogMore") //开启bottomSheetDialog
+
+            val mEtTitle : EditText = editView.findViewById(R.id.et_edit_title)
+            val mEtDesc : EditText = editView.findViewById(R.id.et_edit_desc)
+            val mEtChildTitle : EditText = editView.findViewById(R.id.et_edit_child)
+            val mBtnConfirm : Button = editView.findViewById(R.id.btn_edit_confirm)
+
+            mBtnConfirm.setOnClickListener {
+                if(mEtTitle.text.toString() == "") {
+                    Toast.makeText(context, "内容不能为空" , Toast.LENGTH_SHORT).show()
+                } else {
+                    val newTask = ParentTask(mEtTitle.text.toString(), mEtDesc.text.toString(), userId)
+                    viewModel.insertParentTask(newTask)
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun loadPassage() {
+        viewModel.loadAllParentTask(userId)
+        viewModel.livedataParentTask.observe(viewLifecycleOwner) { taskList ->
+            Log.d("zzx", taskList.toString())
+            adapter.submitList(taskList)
+        }
     }
 
 }
