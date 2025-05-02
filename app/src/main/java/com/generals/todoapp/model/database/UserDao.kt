@@ -51,37 +51,33 @@ interface UserDao {
     @Query("update parent_task set finish = case when finish = 0 then 1 else 0 end where id = :taskId")
     fun finishParentTask(taskId: Int) : Single<Int>
 
-    //更新展开状态
-    @Query("update parent_task set expand = case when expand = 0 then 1 else 0 end where id = :taskId")
-    fun changeExpandStatus(taskId: Int) : Single<Int>
-
     //删除父任务
     @Delete
     fun deleteParentTask(parentTask: ParentTask) : Single<Int>
 
     //查找所有父任务
-    @Query("select * from parent_task  where user_id = :userId order by finish, top, id")
+    @Query("select * from parent_task  where user_id = :userId order by  top, finish, id")
     fun loadAllParentTask(userId: Int) : Flowable<List<ParentTask>>
 
     //添加子任务
     @Insert
-    fun insertChildTask(childTask: ChildTask)
+    fun insertChildTask(childTask: ChildTask) : Single<Long>
 
     //更新子任务
     @Update
-    fun updateChildTask(childTask: ChildTask)
+    fun updateChildTask(childTask: ChildTask) : Single<Int>
 
     //更新子任务的完成状态
     @Query("update child_task set finish = case when finish = 0 then 1 else 0 end where id = :taskId")
-    fun finishChildTask(taskId: Int)
+    fun finishChildTask(taskId: Int) : Single<Int>
 
     //删除子任务
     @Delete
-    fun deleteChildTask(childTask: ChildTask)
+    fun deleteChildTask(childTask: ChildTask) : Single<Int>
 
-    //查找父任务的所有子任务
-    @Query("select * from child_task where parent_id = :parentId")
-    fun loadAllChildTask(parentId : Int) : Flowable<List<ChildTask>>
+    //查找用户下的所有子任务
+    @Query("select * from child_task where user_id = :userId")
+    fun loadAllChildTask(userId: Int) : Flowable<List<ChildTask>>
 
     //更新积分数量
     @Query("update users set coin = :coin where id = :userId")

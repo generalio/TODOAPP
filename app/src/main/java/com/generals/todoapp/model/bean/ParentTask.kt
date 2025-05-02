@@ -15,16 +15,15 @@ data class ParentTask(
     var title: String,
     var desc: String,
     @ColumnInfo(name = "user_id")
-    var userId: Int
-) {
+    var userId: Int,
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+) {
     //top为0 -> 置顶 1 -> 不置顶
     var top: Int = 1
     //finish为0 -> 未完成 1 -> 已完成
     var finish: Int = 0
-    //expand为0 -> 不展开 1 -> 展开
-    var expand: Int = 0
     //grade为1 -> 一级菜单 2 -> 二级菜单
     var grade: Int = 1
+    var parentId: Int = 0
 }

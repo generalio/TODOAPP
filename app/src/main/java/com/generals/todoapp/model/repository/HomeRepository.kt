@@ -21,13 +21,10 @@ object HomeRepository {
 
     fun finishParentTask(taskId: Int) = userDao.finishParentTask(taskId)
 
-    fun changeExpandStatus(taskId: Int) = userDao.changeExpandStatus(taskId)
-
     fun deleteParentTask(parentTask: ParentTask) = userDao.deleteParentTask(parentTask)
 
     fun loadAllParentTask(userId: Int) = userDao.loadAllParentTask(userId)
 
-    /*
     fun insertChildTask(childTask: ChildTask) = userDao.insertChildTask(childTask)
 
     fun updateChildTask(childTask: ChildTask) = userDao.updateChildTask(childTask)
@@ -36,8 +33,6 @@ object HomeRepository {
 
     fun deleteChildTask(childTask: ChildTask) = userDao.deleteChildTask(childTask)
 
-    fun loadAllChildTask(parentId : Int) = userDao.loadAllChildTask(parentId)
-
-     */
+    fun loadAllChildTask(parentId : Int, userId: Int) = userDao.loadAllChildTask(userId)
 
 }

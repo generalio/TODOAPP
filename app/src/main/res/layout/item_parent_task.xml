@@ -35,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:text="desc"
             android:textColor="@color/level_four_font_color"
             android:textSize="16dp"
@@ -43,15 +42,43 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_parent_title" />
 
         <ImageView
-            android:id="@+id/iv_parent_expand"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:contentDescription="expand"
-            android:src="@drawable/ic_folder"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/iv_top"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:contentDescription="top"
+            android:src="@drawable/ic_zhiding"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_parent_title"
+            app:layout_constraintStart_toEndOf="@+id/tv_parent_title"
+            app:layout_constraintTop_toTopOf="@+id/tv_parent_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/parent_top"
+            android:layout_width="100dp"
+            android:layout_height="65dp"
+            android:text="置顶"
+            android:drawableStart="@drawable/ic_zhiding"
+            android:textSize="18dp"
+            android:textColor="#FFFFFFFF"
+            android:gravity="center_vertical"
+            android:background="#FFD700" />
+
+        <TextView
+            android:id="@+id/parent_delete"
+            android:layout_width="100dp"
+            android:layout_height="65dp"
+            android:text="删除"
+            android:drawableStart="@drawable/ic_delete"
+            android:textSize="18dp"
+            android:textColor="#FFFFFFFF"
+            android:gravity="center_vertical"
+            android:background="#fd0823" />
+
+    </LinearLayout>
 
 </LinearLayout>

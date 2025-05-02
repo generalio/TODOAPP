@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.generals.todoapp.R
+import com.generals.todoapp.model.bean.ChildTask
 import com.generals.todoapp.model.bean.ParentTask
 import com.generals.todoapp.ui.CustomDialog
 import com.generals.todoapp.ui.activity.MainActivity
@@ -26,13 +27,13 @@ import com.generals.todoapp.viewmodel.HomeViewModel
 import com.generals.todoapp.viewmodel.MainViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener {
 
-    private var userId : Int = 0
+    var userId : Int = 0
 
-    private val viewModel : HomeViewModel by viewModels()
+    val viewModel : HomeViewModel by viewModels()
     private val mainViewModel : MainViewModel by activityViewModels()
-    private lateinit var mainActivity : MainActivity
+    lateinit var mainActivity : MainActivity
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var floatButton: FloatingActionButton
@@ -60,13 +61,40 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(mainActivity)
         recyclerView.addItemDecoration(DividerItemDecoration(mainActivity, RecyclerView.VERTICAL))
         floatButton = view.findViewById(R.id.home_floatButton)
-        adapter = HomeTaskRecyclerViewAdapter()
+        adapter = HomeTaskRecyclerViewAdapter(this)
         recyclerView.adapter = adapter
 
         initEvent()
 
         viewModel.livedataIsChanged.observe(viewLifecycleOwner) {
             loadPassage()
+        }
+
+        val list : MutableList<ParentTask> = mutableListOf()
+        val parentList : MutableList<ParentTask> = mutableListOf()
+        viewModel.livedataParentTask.observe(viewLifecycleOwner) { parentTask ->
+            parentList.clear()
+            parentList.addAll(parentTask)
+            viewModel.loadAllChildTask(1, userId)
+        }
+
+        viewModel.livedataChildTask.observe(viewLifecycleOwner) { childTask ->
+            list.clear()
+            for(parent in parentList) {
+                list.add(parent)
+                for(child in childTask) {
+                    if(child.parentId == parent.id) {
+                        val newChildTask = ParentTask(child.title,"",userId, child.parentId * 1000 + child.id)
+                        newChildTask.grade = 2
+                        newChildTask.parentId = child.parentId
+                        if(parent.finish == 1) {
+                            newChildTask.finish = 1
+                        }
+                        list.add(newChildTask)
+                    }
+                }
+            }
+            adapter.submitList(list.toList())
         }
 
     }
@@ -88,14 +116,14 @@ class HomeFragment : Fragment() {
             val mEtTitle : EditText = editView.findViewById(R.id.et_edit_title)
             val mEtDesc : EditText = editView.findViewById(R.id.et_edit_desc)
             val mEtChildTitle : EditText = editView.findViewById(R.id.et_edit_child)
+            mEtChildTitle.visibility = View.GONE
             val mBtnConfirm : Button = editView.findViewById(R.id.btn_edit_confirm)
 
             mBtnConfirm.setOnClickListener {
                 if(mEtTitle.text.toString() == "") {
                     Toast.makeText(context, "内容不能为空" , Toast.LENGTH_SHORT).show()
                 } else {
-                    val newTask = ParentTask(mEtTitle.text.toString(), mEtDesc.text.toString(), userId)
-                    viewModel.insertParentTask(newTask)
+                    viewModel.insertParentTask(ParentTask(mEtTitle.text.toString(), mEtDesc.text.toString(), userId))
                     dialog.dismiss()
                 }
             }
@@ -104,10 +132,58 @@ class HomeFragment : Fragment() {
 
     private fun loadPassage() {
         viewModel.loadAllParentTask(userId)
-        viewModel.livedataParentTask.observe(viewLifecycleOwner) { taskList ->
-            Log.d("zzx", taskList.toString())
-            adapter.submitList(taskList)
+    }
+
+    override fun onItemViewClick(parentTask: ParentTask, type: Int) {
+        val editView = LayoutInflater.from(mainActivity).inflate(R.layout.layout_edit, null)!!
+        val dialog = CustomDialog()
+            .newInstance()
+            .setDialogHeight(1000)
+            .setCustomView(editView)
+        val ft: FragmentTransaction =
+            mainActivity.supportFragmentManager.beginTransaction()
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE) //设置过渡动画
+        dialog.show(ft, "DialogMore") //开启bottomSheetDialog
+
+        val mEtTitle : EditText = editView.findViewById(R.id.et_edit_title)
+        val mEtDesc : EditText = editView.findViewById(R.id.et_edit_desc)
+        val mEtChildTitle : EditText = editView.findViewById(R.id.et_edit_child)
+        val mBtnConfirm : Button = editView.findViewById(R.id.btn_edit_confirm)
+
+        val title = parentTask.title
+        val desc = parentTask.desc
+
+        mEtTitle.setText(parentTask.title)
+        if(type == 1) {
+            mEtChildTitle.visibility = View.VISIBLE
+            mEtDesc.setText(parentTask.desc)
+            mBtnConfirm.setOnClickListener {
+                val childTitle = mEtChildTitle.text.toString()
+                if(childTitle != "") {
+                    viewModel.insertChildTask(ChildTask(childTitle,parentTask.id, userId))
+                }
+                if(title != mEtTitle.text.toString() || desc != mEtDesc.text.toString()) {
+                    val updateTask = ParentTask(mEtTitle.text.toString(), mEtDesc.text.toString(), userId, parentTask.id)
+                    updateTask.finish = parentTask.finish
+                    updateTask.top = parentTask.top
+                    viewModel.updateParentTask(updateTask)
+                }
+                dialog.dismiss()
+            }
+        } else {
+            mEtChildTitle.visibility = View.GONE
+            mEtDesc.visibility = View.GONE
+            mBtnConfirm.setOnClickListener {
+                if(title != mEtTitle.text.toString()) {
+                    viewModel.updateChildTask(ChildTask(mEtTitle.text.toString(), parentTask.parentId, userId, parentTask.id - (1000 * parentTask.parentId)))
+                }
+                dialog.dismiss()
+            }
         }
+    }
+
+    override fun onCheckStatusChanged(parentTask: ParentTask) {
+        viewModel.finishParentTask(parentTask.id)
     }
 
 }
