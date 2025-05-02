@@ -83,6 +83,20 @@ class HomeViewModel : ViewModel() {
         compositeDisposable.add(disposable)
     }
 
+    fun updateTopStatus(taskId: Int) {
+        val disposable = HomeRepository.updateTopStatus(taskId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess {
+                _livedataIsChanged.postValue(it)
+            }
+            .doOnError {
+                Log.d("zzx", "(${Error().stackTrace[0].run { "$fileName:$lineNumber" }}) -> ${it.stackTrace}")
+            }
+            .subscribe()
+        compositeDisposable.add(disposable)
+    }
+
     fun loadAllParentTask(userId: Int) {
         val disposable = HomeRepository.loadAllParentTask(userId)
             .subscribeOn(Schedulers.io())

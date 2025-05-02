@@ -1,20 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.generals.todoapp.ui.CustomChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/child_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="58dp"
     android:orientation="horizontal">
 
     <TextView
         android:id="@+id/tv_child_title"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="58dp"
         android:text="一级列表title"
         android:textColor="@color/alpha_forty_level_two_font_color"
         android:textSize="18dp"
         android:padding="8dp"/>
 
+    <TextView
+        android:id="@+id/child_delete"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:text="删除"
+        android:drawableStart="@drawable/ic_delete"
+        android:textSize="18dp"
+        android:textColor="#FFFFFFFF"
+        android:gravity="center_vertical"
+        android:background="#fd0823" />
 
-</LinearLayout>
+
+</com.generals.todoapp.ui.CustomChildLinearLayout>

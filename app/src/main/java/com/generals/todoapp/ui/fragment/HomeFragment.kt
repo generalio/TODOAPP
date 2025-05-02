@@ -31,9 +31,9 @@ class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener
 
     var userId : Int = 0
 
-    val viewModel : HomeViewModel by viewModels()
+    private val viewModel : HomeViewModel by viewModels()
     private val mainViewModel : MainViewModel by activityViewModels()
-    lateinit var mainActivity : MainActivity
+    private lateinit var mainActivity : MainActivity
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var floatButton: FloatingActionButton
@@ -89,6 +89,9 @@ class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener
                         newChildTask.parentId = child.parentId
                         if(parent.finish == 1) {
                             newChildTask.finish = 1
+                        }
+                        if(parent.top == 0) {
+                            newChildTask.top = 0
                         }
                         list.add(newChildTask)
                     }
@@ -184,6 +187,19 @@ class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener
 
     override fun onCheckStatusChanged(parentTask: ParentTask) {
         viewModel.finishParentTask(parentTask.id)
+    }
+
+    override fun onParentDelete(parentTask: ParentTask) {
+        viewModel.deleteParentTask(parentTask)
+    }
+
+    override fun onChildDelete(childTask: ParentTask) {
+        val child = ChildTask(childTask.title, childTask.parentId, userId, childTask.id - (1000 * childTask.parentId))
+        viewModel.deleteChildTask(child)
+    }
+
+    override fun onParentTop(parentTask: ParentTask) {
+        viewModel.updateTopStatus(parentTask.id)
     }
 
 }

@@ -23,6 +23,8 @@ object HomeRepository {
 
     fun deleteParentTask(parentTask: ParentTask) = userDao.deleteParentTask(parentTask)
 
+    fun updateTopStatus(taskId: Int) = userDao.updateTopStatus(taskId)
+
     fun loadAllParentTask(userId: Int) = userDao.loadAllParentTask(userId)
 
     fun insertChildTask(childTask: ChildTask) = userDao.insertChildTask(childTask)
