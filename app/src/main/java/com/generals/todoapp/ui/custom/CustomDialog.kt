@@ -1,4 +1,4 @@
-package com.generals.todoapp.ui
+package com.generals.todoapp.ui.custom
 
 import android.app.Dialog
 import android.os.Bundle

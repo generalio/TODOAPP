@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.generals.todoapp.ui.CustomChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.generals.todoapp.ui.custom.CustomChildLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/child_layout"
@@ -18,6 +18,17 @@
         android:padding="8dp"/>
 
     <TextView
+        android:id="@+id/child_finish"
+        android:layout_width="100dp"
+        android:layout_height="65dp"
+        android:text="完成"
+        android:drawableStart="@drawable/ic_finish"
+        android:textSize="18dp"
+        android:textColor="#FFFFFFFF"
+        android:gravity="center_vertical"
+        android:background="@color/colorPrimary" />
+
+    <TextView
         android:id="@+id/child_delete"
         android:layout_width="100dp"
         android:layout_height="65dp"
@@ -29,4 +40,4 @@
         android:background="#fd0823" />
 
 
-</com.generals.todoapp.ui.CustomChildLinearLayout>
+</com.generals.todoapp.ui.custom.CustomChildLinearLayout>

@@ -6,16 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentTransaction
 import com.generals.todoapp.R
 import com.generals.todoapp.model.bean.User
-import com.generals.todoapp.ui.CustomDialog
+import com.generals.todoapp.ui.custom.CustomDialog
 import com.generals.todoapp.viewmodel.LoginViewModel
 import com.google.android.material.textfield.TextInputLayout
 

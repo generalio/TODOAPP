@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.generals.todoapp.ui.CustomParentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.generals.todoapp.ui.custom.CustomParentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
@@ -77,4 +77,4 @@
         android:gravity="center_vertical"
         android:background="#fd0823" />
 
-</com.generals.todoapp.ui.CustomParentLinearLayout>
+</com.generals.todoapp.ui.custom.CustomParentLinearLayout>

@@ -2,7 +2,6 @@ package com.generals.todoapp.ui.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.generals.todoapp.R
 import com.generals.todoapp.model.bean.ChildTask
 import com.generals.todoapp.model.bean.ParentTask
-import com.generals.todoapp.ui.CustomDialog
+import com.generals.todoapp.ui.custom.CustomDialog
 import com.generals.todoapp.ui.activity.MainActivity
 import com.generals.todoapp.ui.adapter.HomeTaskRecyclerViewAdapter
 import com.generals.todoapp.viewmodel.HomeViewModel
@@ -87,6 +85,7 @@ class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener
                         val newChildTask = ParentTask(child.title,"",userId, child.parentId * 1000 + child.id)
                         newChildTask.grade = 2
                         newChildTask.parentId = child.parentId
+                        newChildTask.finish = child.finish
                         if(parent.finish == 1) {
                             newChildTask.finish = 1
                         }
@@ -200,6 +199,10 @@ class HomeFragment : Fragment(), HomeTaskRecyclerViewAdapter.OnItemClickListener
 
     override fun onParentTop(parentTask: ParentTask) {
         viewModel.updateTopStatus(parentTask.id)
+    }
+
+    override fun onChildFinish(childTask: ParentTask) {
+        viewModel.finishChildTask(childTask.id - (1000 * childTask.parentId))
     }
 
 }

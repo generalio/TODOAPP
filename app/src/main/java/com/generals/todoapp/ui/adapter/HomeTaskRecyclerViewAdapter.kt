@@ -40,6 +40,7 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
         fun onParentDelete(parentTask: ParentTask)
         fun onChildDelete(childTask: ParentTask)
         fun onParentTop(parentTask: ParentTask)
+        fun onChildFinish(childTask: ParentTask)
     }
 
     inner class ParentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -96,12 +97,22 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
         val childTitle : TextView = view.findViewById(R.id.tv_child_title)
         private val childDelete: TextView = view.findViewById(R.id.child_delete)
         val childLayout : View = view.findViewById(R.id.child_layout)
+        val childFinish: TextView = view.findViewById(R.id.child_finish)
         init {
             childTitle.setOnClickListener {
+                childTitle.animate().translationX(0F)
+                childDelete.animate().translationX(0F)
+                childFinish.animate().translationX(0F)
                 itemClickListener.onItemViewClick(getItem(adapterPosition),2)
             }
             childDelete.setOnClickListener {
                 itemClickListener.onChildDelete(getItem(adapterPosition))
+            }
+            childFinish.setOnClickListener {
+                childTitle.animate().translationX(0F)
+                childDelete.animate().translationX(0F)
+                childFinish.animate().translationX(0F)
+                itemClickListener.onChildFinish(getItem(adapterPosition))
             }
         }
     }
@@ -115,6 +126,7 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
                     holder.checkBox.isChecked = false
                     holder.parentTitle.text = task.title
                     holder.parentDesc.text = task.desc
+
                 } else {
                     holder.checkBox.isChecked = true
                     holder.parentTitle.text = HtmlCompat.fromHtml("<s>${task.title}</s>" , HtmlCompat.FROM_HTML_MODE_LEGACY)
@@ -138,8 +150,10 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
 
             is ChildViewHolder -> {
                 holder.childTitle.text = task.title
+                holder.childFinish.text = "完成任务"
                 if(task.finish == 1) {
                     holder.childTitle.text = HtmlCompat.fromHtml("<s>${task.title}</s>" , HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    holder.childFinish.text = "取消完成"
                 }
                 if(task.top == 0) {
                     holder.childLayout.setBackgroundColor(Color.parseColor("#DEDEDE"))
