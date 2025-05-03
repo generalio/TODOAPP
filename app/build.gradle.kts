@@ -57,5 +57,8 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.rxjava)
     kapt(libs.androidx.room.compiler)
+    implementation(libs.retrofit.adapter.rxjava)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
 
 }

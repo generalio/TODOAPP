@@ -50,6 +50,7 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
         val parentTop : TextView = view.findViewById(R.id.parent_top)
         val top : ImageView = view.findViewById(R.id.iv_top)
         val parentLayout : View = view.findViewById(R.id.parent_text_layout)
+        val layout : View = view.findViewById(R.id.parent_layout)
         init {
             parentLayout.setOnClickListener {
                 parentLayout.animate().translationX(0F)
@@ -80,11 +81,11 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
                 if(getItem(adapterPosition).top == 0) {
                     top.visibility = View.GONE
                     parentTop.text = "置顶"
-                    parentLayout.background = null
+                    layout.background = null
                 } else {
                     top.visibility = View.VISIBLE
                     parentTop.text = "取消置顶"
-                    parentLayout.setBackgroundColor(Color.parseColor("#DEDEDE"))
+                    layout.setBackgroundColor(Color.parseColor("#DEDEDE"))
                 }
                 itemClickListener.onParentTop(getItem(adapterPosition))
             }
@@ -127,11 +128,11 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
                 if(task.top == 1) {
                     holder.top.visibility = View.GONE
                     holder.parentTop.text = "置顶"
-                    holder.parentLayout.background = null
+                    holder.layout.background = null
                 } else {
                     holder.top.visibility = View.VISIBLE
                     holder.parentTop.text = "取消置顶"
-                    holder.parentLayout.setBackgroundColor(Color.parseColor("#DEDEDE"))
+                    holder.layout.setBackgroundColor(Color.parseColor("#DEDEDE"))
                 }
             }
 

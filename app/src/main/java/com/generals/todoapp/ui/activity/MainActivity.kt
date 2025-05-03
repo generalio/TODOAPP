@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.generals.todoapp.R
 import com.generals.todoapp.ui.adapter.VP2Adapter
+import com.generals.todoapp.ui.fragment.ChatFragment
 import com.generals.todoapp.ui.fragment.HomeFragment
 import com.generals.todoapp.ui.fragment.PersonFragment
 import com.generals.todoapp.ui.fragment.TimeFragment
@@ -47,6 +48,7 @@ class MainActivity : BaseActivity() {
         val fragmentList: MutableList<Fragment> = ArrayList()
         fragmentList.add(HomeFragment())
         fragmentList.add(TimeFragment())
+        fragmentList.add(ChatFragment())
         fragmentList.add(PersonFragment())
         viewPager2.adapter = VP2Adapter(this, fragmentList)
         viewPager2.isUserInputEnabled = false
@@ -62,8 +64,12 @@ class MainActivity : BaseActivity() {
                     viewPager2.currentItem = 1
                     return@setOnItemSelectedListener true
                 }
-                R.id.bottom_person -> {
+                R.id.bottom_chat -> {
                     viewPager2.currentItem = 2
+                    return@setOnItemSelectedListener true
+                }
+                R.id.bottom_person -> {
+                    viewPager2.currentItem = 3
                     return@setOnItemSelectedListener true
                 }
             }

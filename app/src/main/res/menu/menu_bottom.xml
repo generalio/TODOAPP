@@ -12,6 +12,11 @@
         android:icon="@drawable/bottom_time" />
 
     <item
+        android:id="@+id/bottom_chat"
+        android:title="聊天"
+        android:icon="@drawable/bottom_chat" />
+
+    <item
         android:id="@+id/bottom_person"
         android:title="我的"
         android:icon="@drawable/bottom_person" />
