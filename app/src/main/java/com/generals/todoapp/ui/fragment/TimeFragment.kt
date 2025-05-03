@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.generals.todoapp.R
 import com.generals.todoapp.ui.activity.MainActivity
+import com.generals.todoapp.ui.custom.CustomCircle
 import com.generals.todoapp.viewmodel.MainViewModel
 import kotlin.math.min
 
@@ -30,6 +31,7 @@ class TimeFragment : Fragment() {
     private lateinit var mEtHour: EditText
     private lateinit var mEtMinute: EditText
     private lateinit var mEtSecond: EditText
+    private lateinit var mCustomCircle: CustomCircle
 
     var times = 0
 
@@ -46,13 +48,14 @@ class TimeFragment : Fragment() {
 
         mTvTime = view.findViewById(R.id.tv_time)
         mBtnStart = view.findViewById(R.id.btn_time_start)
-        mBtnPause = view.findViewById(R.id.btn_time_pause)
+//        mBtnPause = view.findViewById(R.id.btn_time_pause)
         mBtnStop = view.findViewById(R.id.btn_time_stop)
         mBtnSet = view.findViewById(R.id.btn_time_set)
-        mBtnContinue = view.findViewById(R.id.btn_time_continue)
+//        mBtnContinue = view.findViewById(R.id.btn_time_continue)
         mEtHour = view.findViewById(R.id.et_hour)
         mEtMinute = view.findViewById(R.id.et_minute)
         mEtSecond = view.findViewById(R.id.et_second)
+        mCustomCircle = view.findViewById(R.id.custom_circle)
 
         mainActivity = activity as MainActivity
 
@@ -128,6 +131,8 @@ class TimeFragment : Fragment() {
                     if(second < 10) {
                         secondText = "0$second"
                     }
+                    mCustomCircle.visibility = View.VISIBLE
+                    mCustomCircle.startAnimate(count)
                     mTvTime.text = "${hourText}:${minuteText}:${secondText}"
                     mEtHour.setText("")
                     mEtMinute.setText("")
@@ -138,19 +143,23 @@ class TimeFragment : Fragment() {
                 }
             }
         }
-        mBtnPause.setOnClickListener {
-            mainActivity.stopCountDown()
-            mBtnContinue.visibility = View.VISIBLE
-            mBtnPause.visibility = View.GONE
-        }
-        mBtnContinue.setOnClickListener {
-            if(times != 0) {
-                mainActivity.countDown(times)
-                mBtnContinue.visibility = View.GONE
-                startView()
-            }
-        }
+//        mBtnPause.setOnClickListener {
+//            mCustomCircle.pauseAnimate()
+//            mainActivity.stopCountDown()
+//            mBtnContinue.visibility = View.VISIBLE
+//            mBtnPause.visibility = View.GONE
+//        }
+//        mBtnContinue.setOnClickListener {
+//            mCustomCircle.continueAnimate()
+//            if(times != 0) {
+//                mainActivity.countDown(times)
+//                mBtnContinue.visibility = View.GONE
+//                startView()
+//            }
+//        }
         mBtnStop.setOnClickListener {
+            mCustomCircle.resetAnimate()
+            mCustomCircle.visibility = View.GONE
             mainActivity.stopCountDown()
             mTvTime.text = "00:00:00"
             initView()
@@ -160,15 +169,15 @@ class TimeFragment : Fragment() {
     private fun initView() {
         mBtnStart.visibility = View.VISIBLE
         mBtnSet.visibility = View.VISIBLE
-        mBtnPause.visibility = View.GONE
+//        mBtnPause.visibility = View.GONE
         mBtnStop.visibility = View.GONE
-        mBtnContinue.visibility = View.GONE
+//        mBtnContinue.visibility = View.GONE
     }
 
     private fun startView() {
         mBtnStart.visibility = View.GONE
         mBtnSet.visibility = View.GONE
-        mBtnPause.visibility = View.VISIBLE
+//        mBtnPause.visibility = View.VISIBLE
         mBtnStop.visibility = View.VISIBLE
     }
 
