@@ -19,8 +19,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainViewModel : ViewModel() {
 
     private val _livedataUser: MutableLiveData<User> = MutableLiveData()
+    private val _livedataCount: MutableLiveData<Int> = MutableLiveData()
 
     val livedataUser : LiveData<User> get() = _livedataUser
+    val livedataCount : LiveData<Int> get() = _livedataCount
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -36,6 +38,15 @@ class MainViewModel : ViewModel() {
             }
             .subscribe()
         compositeDisposable.add(disposable)
+    }
+
+    fun sendTime(count: Int) {
+        _livedataCount.postValue(count)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
     }
 
 }

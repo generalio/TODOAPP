@@ -77,13 +77,17 @@ class ChatFragment : Fragment() {
     private fun initEvent() {
         mBtnClick.setOnClickListener {
             val text = mEtContent.text.toString()
-            loadChat(text)
-            val list : MutableList<Message> = mutableListOf()
-            list.add(Message(text,"user"))
-            viewModel.chat(ChatRequest(list, "qwq-32b"))
-            mBtnClick.visibility = View.GONE
-            mBtnNoClick.visibility = View.VISIBLE
-            mEtContent.text = ""
+            if(text != "") {
+                loadChat(text)
+                val list : MutableList<Message> = mutableListOf()
+                list.add(Message(text,"user"))
+                viewModel.chat(ChatRequest(list, "qwq-32b"))
+                mBtnClick.visibility = View.GONE
+                mBtnNoClick.visibility = View.VISIBLE
+                mEtContent.text = ""
+            } else {
+                mainActivity.showInfo("内容不能为空!")
+            }
         }
     }
 

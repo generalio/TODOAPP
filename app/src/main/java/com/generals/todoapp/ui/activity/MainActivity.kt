@@ -1,6 +1,9 @@
 package com.generals.todoapp.ui.activity
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -19,6 +22,9 @@ class MainActivity : BaseActivity() {
     private lateinit var viewPager2: ViewPager2
 
     private val viewmodel : MainViewModel by viewModels()
+
+    private lateinit var handler: Handler
+    private lateinit var runnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +87,36 @@ class MainActivity : BaseActivity() {
                 navigationView.menu.getItem(position).isChecked = true
             }
         })
+    }
+
+    fun showInfo(text: String) {
+        text.showToast()
+    }
+
+    fun countDown(times: Int) {
+        var count = times
+        handler = Handler(Looper.getMainLooper())
+        runnable = object : Runnable {
+            override fun run() {
+                viewmodel.sendTime(count - 1)
+                count--
+                if(count > 0) {
+                    handler.postDelayed(this, 1000)
+                } else {
+                    "计时已完成!".showToast()
+                }
+            }
+        }
+        handler.postDelayed(runnable, 1000)
+    }
+
+    fun stopCountDown() {
+        handler.removeCallbacks(runnable)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
     }
 
 }
