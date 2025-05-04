@@ -63,6 +63,7 @@ class TimeFragment : Fragment() {
             times = it
             setTimes()
             if(times == 0) {
+                mCustomCircle.visibility = View.GONE
                 initView()
             }
         }

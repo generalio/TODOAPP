@@ -46,6 +46,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initEvent() {
+        handler = Handler(Looper.getMainLooper()) //调换了handler位置，防止不开始计时导致Handler未初始化
         setNavigation()
     }
 
@@ -95,7 +96,6 @@ class MainActivity : BaseActivity() {
 
     fun countDown(times: Int) {
         var count = times
-        handler = Handler(Looper.getMainLooper())
         runnable = object : Runnable {
             override fun run() {
                 viewmodel.sendTime(count - 1)

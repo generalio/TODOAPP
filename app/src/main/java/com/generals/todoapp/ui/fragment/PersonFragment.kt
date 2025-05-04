@@ -1,21 +1,30 @@
 package com.generals.todoapp.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import com.generals.todoapp.R
+import com.generals.todoapp.ui.activity.CoinActivity
+import com.generals.todoapp.ui.activity.MainActivity
 import com.generals.todoapp.viewmodel.MainViewModel
+import kotlin.properties.Delegates
 
 class PersonFragment : Fragment() {
 
     private lateinit var mTvUsername: TextView
-    private lateinit var mTvCoin: TextView
+    private lateinit var mBtnCoin: Button
+    private lateinit var mBtnLogout: Button
 
     private val mainViewModel : MainViewModel by activityViewModels()
+    private lateinit var mainActivity : MainActivity
+
+    private var userId = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +38,9 @@ class PersonFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mTvUsername = view.findViewById(R.id.tv_person_username)
-        mTvCoin = view.findViewById(R.id.tv_person_coin)
+        mBtnCoin = view.findViewById(R.id.btn_person_coin)
+        mBtnLogout = view.findViewById(R.id.btn_person_logout)
+        mainActivity = activity as MainActivity
         initEvent()
 
     }
@@ -37,7 +48,15 @@ class PersonFragment : Fragment() {
     private fun initEvent() {
         mainViewModel.livedataUser.observe(viewLifecycleOwner) { user ->
             mTvUsername.text = user.username
-            mTvCoin.text = user.coin.toString()
+            userId = user.id
+        }
+        mBtnLogout.setOnClickListener {
+            mainActivity.finish()
+        }
+        mBtnCoin.setOnClickListener {
+            val intent = Intent(mainActivity, CoinActivity::class.java)
+            intent.putExtra("userId", userId)
+            mainActivity.startActivity(intent)
         }
     }
 

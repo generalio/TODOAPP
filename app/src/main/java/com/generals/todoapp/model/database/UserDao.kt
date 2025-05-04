@@ -81,6 +81,6 @@ interface UserDao {
 
     //更新积分数量
     @Query("update users set coin = :coin where id = :userId")
-    fun updateCoin(userId: Int, coin: Int)
+    fun updateCoin(userId: Int, coin: Int) :Single<Int>
 
 }

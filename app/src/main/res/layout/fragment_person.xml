@@ -27,23 +27,28 @@
         app:layout_constraintStart_toEndOf="@+id/iv_person"
         app:layout_constraintTop_toTopOf="@+id/iv_person" />
 
-    <ImageView
-        android:id="@+id/iv_person_coin"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:src="@drawable/ic_coin"
-        app:layout_constraintStart_toEndOf="@+id/iv_person"
-        app:layout_constraintTop_toBottomOf="@+id/tv_person_username" />
-
-    <TextView
-        android:id="@+id/tv_person_coin"
-        android:layout_width="wrap_content"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_person_coin"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:text="积分"
-        android:textColor="@color/level_two_font_color"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/iv_person_coin"
-        app:layout_constraintStart_toEndOf="@+id/iv_person_coin" />
+        android:layout_marginTop="28dp"
+        android:text="积分中心"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_person" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_person_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="退出登录"
+        app:cornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_person_coin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
