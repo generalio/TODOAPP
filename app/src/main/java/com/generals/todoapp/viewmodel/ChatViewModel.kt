@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.generals.todoapp.model.bean.ChatRequest
 import com.generals.todoapp.model.bean.ChatResponse
 import com.generals.todoapp.model.repository.ChatRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,15 +24,16 @@ class ChatViewModel : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
-    fun chat(chatRequest: ChatRequest) {
-        val disposable = ChatRepository.chat(chatRequest)
+    fun chat(message: String) {
+        val disposable = ChatRepository.chat(message)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { response ->
                 _livedataChatResponse.postValue(response)
             }
             .doOnError {
-                _livedataChatResponse.postValue(ChatResponse("",502,"请求失败","",""))
+                Log.d("zzx", "(${Error().stackTrace[0].run { "$fileName:$lineNumber" }}) -> ${it.stackTrace}")
+                _livedataChatResponse.postValue(ChatResponse("请求失败",502,"","",""))
             }
             .subscribe()
         compositeDisposable.add(disposable)

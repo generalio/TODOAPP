@@ -7,9 +7,9 @@ package com.generals.todoapp.model.bean
  */
 
 data class ChatResponse(
-    val api_source: String,
+    val answer: String,
     val code: Int,
-    val content: String,
-    val msg: String,
-    val reasoning_content: String
+    val message: String,
+    val model: String,
+    val msg: String
 )

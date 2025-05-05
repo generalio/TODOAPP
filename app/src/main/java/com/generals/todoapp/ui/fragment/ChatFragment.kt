@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.generals.todoapp.R
 import com.generals.todoapp.model.bean.Chat
-import com.generals.todoapp.model.bean.ChatRequest
-import com.generals.todoapp.model.bean.Message
 import com.generals.todoapp.ui.activity.MainActivity
 import com.generals.todoapp.ui.adapter.ChatRecyclerViewAdapter
 import com.generals.todoapp.viewmodel.ChatViewModel
@@ -66,7 +64,7 @@ class ChatFragment : Fragment() {
             if(response.code != 200) {
                 text = response.msg
             } else {
-                text = response.content
+                text = response.answer
             }
             loadChat(text)
             mBtnNoClick.visibility = View.GONE
@@ -79,9 +77,7 @@ class ChatFragment : Fragment() {
             val text = mEtContent.text.toString()
             if(text != "") {
                 loadChat(text)
-                val list : MutableList<Message> = mutableListOf()
-                list.add(Message(text,"user"))
-                viewModel.chat(ChatRequest(list, "qwq-32b"))
+                viewModel.chat(text)
                 mBtnClick.visibility = View.GONE
                 mBtnNoClick.visibility = View.VISIBLE
                 mEtContent.text = ""

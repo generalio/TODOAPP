@@ -1,6 +1,5 @@
 package com.generals.todoapp.model.repository
 
-import com.generals.todoapp.model.bean.ChatRequest
 import com.generals.todoapp.model.network.ChatService
 import com.generals.todoapp.model.network.ServiceCreator
 
@@ -14,6 +13,6 @@ object ChatRepository {
 
     private val retrofit = ServiceCreator.create<ChatService>()
 
-    fun chat(chatRequest: ChatRequest) = retrofit.chatRequest(chatRequest)
+    fun chat(message: String) = retrofit.chatRequest(message)
 
 }
