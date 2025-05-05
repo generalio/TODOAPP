@@ -29,7 +29,7 @@ class CustomBackgroundCircle @JvmOverloads constructor(
         paint.style =Paint.Style.STROKE
         paint.strokeWidth = 50F
         paint.color = Color.argb(255,0,142,145)
-        val cx = 710F //圆心坐标
+        val cx = 560F //圆心坐标
         val cy = 710F
         val r  = 500f //半径
         val oval = RectF(cx - r, cy - r, cx + r, cy + r) //以这个矩形画圆（两个对角）

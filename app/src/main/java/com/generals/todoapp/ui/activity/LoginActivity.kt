@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.viewModels
+import androidx.core.content.edit
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.FragmentTransaction
 import com.generals.todoapp.R
@@ -52,6 +53,12 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun initEvent() {
+        val sharedPreferences = getSharedPreferences("user", MODE_PRIVATE)
+        val getUsername = sharedPreferences.getString("username","").toString()
+        val getPassword = sharedPreferences.getString("password","").toString()
+        if(getUsername != "" && getPassword != "") {
+            viewmodel.login(getUsername, getPassword)
+        }
         mEtAccount.addTextChangedListener {
             if (mEtAccount.text.toString() != "") {
                 mTilAccount.isErrorEnabled = false
@@ -82,6 +89,10 @@ class LoginActivity : BaseActivity() {
                 }
             } else {
                 "登录成功".showToast()
+                sharedPreferences.edit {
+                    putString("username",mEtAccount.text.toString())
+                    putString("password",mEtPassword.text.toString())
+                }
                 val intent = Intent(this, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
                 intent.putExtra("userId", id)

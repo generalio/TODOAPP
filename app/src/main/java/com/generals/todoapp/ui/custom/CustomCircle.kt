@@ -41,7 +41,7 @@ class CustomCircle @JvmOverloads constructor(
         paint.style =Paint.Style.STROKE
         paint.strokeWidth = 50F
         paint.color = Color.argb(255,254,247,255)
-        val cx = 710F //圆心坐标
+        val cx = 560F //圆心坐标
         val cy = 710F
         val r  = 500F //半径
         val oval = RectF(cx - r, cy - r, cx + r, cy + r) //以这个矩形画圆（两个对角）
@@ -64,7 +64,7 @@ class CustomCircle @JvmOverloads constructor(
     }
 
     fun startAnimate(times: Int) {
-        animator.duration = (times * 1000 * 2).toLong()
+        animator.duration = (times * 1000).toLong()
         animator.interpolator = LinearInterpolator()
         animator.start()
     }

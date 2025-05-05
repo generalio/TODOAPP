@@ -1,5 +1,6 @@
 package com.generals.todoapp.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.edit
 import androidx.fragment.app.activityViewModels
 import com.generals.todoapp.R
 import com.generals.todoapp.ui.activity.CoinActivity
@@ -51,6 +53,10 @@ class PersonFragment : Fragment() {
             userId = user.id
         }
         mBtnLogout.setOnClickListener {
+            mainActivity.getSharedPreferences("user",Context.MODE_PRIVATE).edit {
+                putString("username","")
+                putString("password","")
+            }
             mainActivity.finish()
         }
         mBtnCoin.setOnClickListener {
