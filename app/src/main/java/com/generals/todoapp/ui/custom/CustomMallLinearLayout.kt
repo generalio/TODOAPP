@@ -41,7 +41,7 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        maxSlopHeight = cardView.measuredHeight.toFloat()
+        maxSlopHeight = cardView.measuredHeight.toFloat() //得到cardview的高
     }
 
 
@@ -88,12 +88,12 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
 //        return super.onTouchEvent(event)
 //    }
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?) = false
+    override fun onInterceptTouchEvent(ev: MotionEvent?) = false //可以删
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouchEvent(event: MotionEvent?) = false
+    override fun onTouchEvent(event: MotionEvent?) = false //可以删
 
     override fun onStartNestedScroll(child: View, target: View, axes: Int, type: Int): Boolean {
-        return axes and ViewCompat.SCROLL_AXIS_VERTICAL != 0
+        return axes and ViewCompat.SCROLL_AXIS_VERTICAL != 0 //如果检测到垂直滑动就由自己处理，否则就不处理
     }
 
     override fun onNestedScrollAccepted(child: View, target: View, axes: Int, type: Int) {
@@ -102,6 +102,11 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
 
     override fun onStopNestedScroll(target: View, type: Int) {
         super.onStopNestedScroll(target)
+        /**
+         * 当结束嵌套滑动时
+         * 判断距离是否>1/2*height
+         * 是就吸顶，否就回原位
+         */
         if(-cardView.translationY > maxSlopHeight / 2) {
             autoMove(-maxSlopHeight)
         } else {
@@ -122,19 +127,20 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
 
 
     override fun onNestedPreScroll(target: View, dx: Int, dy: Int, consumed: IntArray, type: Int) {
-        var consume = 0F
+        var consume = 0F //初始化父view需要消耗的距离
         if(dy > 0 && -cardView.translationY < maxSlopHeight ) {
-            consume = min(dy.toFloat(), cardView.translationY + maxSlopHeight)
-            move(-consume)
+            consume = min(dy.toFloat(), cardView.translationY + maxSlopHeight) //对剩余滑的距离(cardview高度-已经滑的高度)和当前滑动距离取最小值
+            move(-consume) //向上滑是负的，而dy是向上滑为正
         }
         if(dy < 0 && cardView.translationY < 0) {
-            consume = max(dy.toFloat(), cardView.translationY)
+            consume = max(dy.toFloat(), cardView.translationY) //同理，这是向下滑时
             move(-consume)
         }
-        consumed[1] = consume.toInt()
+        consumed[1] = consume.toInt() //consume[1]是y轴的消费距离
     }
 
     private fun move(transition: Float) {
+        // 这里不能用animate().translationY(),因为这个是启动个动画，而我们需要下一帧就立即执行，因为如果这一帧没有消费位移，就会认为父没有消费从而交给子View消费
         val transitionY = (cardView.translationY + transition).coerceIn(-maxSlopHeight, 0F)
         cardView.translationY = transitionY
         tabLayout.translationY = transitionY

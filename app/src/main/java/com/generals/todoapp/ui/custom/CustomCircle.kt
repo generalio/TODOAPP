@@ -46,10 +46,10 @@ class CustomCircle @JvmOverloads constructor(
         val r  = 500F //半径
         val oval = RectF(cx - r, cy - r, cx + r, cy + r) //以这个矩形画圆（两个对角）
         circlePath.addArc(oval, -90F, -360F) //以上方为起点，逆时针画360°
-        circlePathMeasure = PathMeasure(circlePath, true)
-        animator = ValueAnimator.ofFloat(0F,1F)
+        circlePathMeasure = PathMeasure(circlePath, true) //将path与测量工具关联
+        animator = ValueAnimator.ofFloat(0F,1F) //启用属性动画
         animator.addUpdateListener { animation ->
-            mCurAnimValue = animation.animatedValue as Float
+            mCurAnimValue = animation.animatedValue as Float //当动画进度更新时同步绘制
             invalidate()
         }
     }
@@ -57,15 +57,15 @@ class CustomCircle @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         //路径动画
-        val stop = circlePathMeasure.length * mCurAnimValue
-        dst.reset()
-        circlePathMeasure.getSegment(0F,stop,dst,true)
+        val stop = circlePathMeasure.length * mCurAnimValue //设置当前应该画的路径长度
+        dst.reset() //重置一下路径dst
+        circlePathMeasure.getSegment(0F,stop,dst,true) //将这段路径添加到dst中
         canvas.drawPath(dst, paint)
     }
 
     fun startAnimate(times: Int) {
-        animator.duration = (times * 1000).toLong()
-        animator.interpolator = LinearInterpolator()
+        animator.duration = (times * 1000).toLong() //设置时间
+        animator.interpolator = LinearInterpolator() //设置线性插值器
         animator.start()
     }
 

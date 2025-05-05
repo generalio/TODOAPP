@@ -20,9 +20,9 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
 
     private val slopTouch = ViewConfiguration.get(context).scaledTouchSlop
 
-    private var lastX = 0
+    private var lastX = 0 //上一次滑动的x,y
     private var lastY = 0
-    private var initialX = 0
+    private var initialX = 0 //初始按下那一瞬间的x
 
     private lateinit var textLayout: View
     private lateinit var topLayout: View
@@ -36,15 +36,19 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        /**
+         * 点击事件初始化必须在这里写
+         * 因为onMove()收不到点击事件，被子View拦截了
+         */
         when(ev.action) {
             MotionEvent.ACTION_DOWN -> {
-                initialX = ev.x.toInt() - topLayout.translationX.toInt()
+                initialX = ev.x.toInt() - topLayout.translationX.toInt() //计算偏移量
                 lastX = ev.x.toInt()
                 lastY = ev.y.toInt()
             }
             MotionEvent.ACTION_MOVE -> {
                 if(abs(ev.x - lastX) > slopTouch || abs(ev.y - lastY) > slopTouch) {
-                    return true
+                    return true //由父View消费滑动事件
                 }
                 lastX = ev.x.toInt()
                 lastY = ev.y.toInt()
@@ -56,6 +60,7 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when(event.action) {
+            // 处理滑动事件
             MotionEvent.ACTION_MOVE -> {
                 val transitionX = (event.x - initialX).coerceIn(-(topLayout.width + deleteLayout.width).toFloat(), 0F)
                 textLayout.translationX = transitionX
