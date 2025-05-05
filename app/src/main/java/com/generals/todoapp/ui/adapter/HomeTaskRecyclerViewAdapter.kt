@@ -157,6 +157,8 @@ class HomeTaskRecyclerViewAdapter(val itemClickListener: OnItemClickListener) : 
                 }
                 if(task.top == 0) {
                     holder.childLayout.setBackgroundColor(Color.parseColor("#DEDEDE"))
+                } else {
+                    holder.childLayout.background = null
                 }
             }
         }
