@@ -3,6 +3,7 @@ package com.generals.todoapp.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -57,6 +58,8 @@ class LoginActivity : BaseActivity() {
         val getUsername = sharedPreferences.getString("username","").toString()
         val getPassword = sharedPreferences.getString("password","").toString()
         if(getUsername != "" && getPassword != "") {
+            mEtAccount.setText(getUsername)
+            mEtPassword.setText(getPassword)
             viewmodel.login(getUsername, getPassword)
         }
         mEtAccount.addTextChangedListener {
@@ -76,9 +79,7 @@ class LoginActivity : BaseActivity() {
                 if (mEtPassword.text.toString() == "") {
                     mTilPassword.setError("密码不能为空")
                 } else {
-                    val username = mEtAccount.text.toString()
-                    val password = mEtPassword.text.toString()
-                    viewmodel.login(username, password)
+                    viewmodel.login(mEtAccount.text.toString(), mEtPassword.text.toString())
                 }
             }
         }
