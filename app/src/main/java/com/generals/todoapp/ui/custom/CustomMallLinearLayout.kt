@@ -114,6 +114,7 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
         }
     }
 
+    //手势下滑时，先把rv拉到顶部再拉积分详情
     override fun onNestedScroll(
         target: View,
         dxConsumed: Int,
@@ -122,7 +123,10 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
         dyUnconsumed: Int,
         type: Int
     ) {
-
+        if(dyUnconsumed < 0 && cardView.translationY < 0) {
+            val consume = max(dyUnconsumed.toFloat(), cardView.translationY)
+            move(-consume)
+        }
     }
 
 
@@ -132,10 +136,10 @@ class CustomMallLinearLayout(context: Context, attributeSet: AttributeSet?) : Li
             consume = min(dy.toFloat(), cardView.translationY + maxSlopHeight) //对剩余滑的距离(cardview高度-已经滑的高度)和当前滑动距离取最小值
             move(-consume) //向上滑是负的，而dy是向上滑为正
         }
-        if(dy < 0 && cardView.translationY < 0) {
-            consume = max(dy.toFloat(), cardView.translationY) //同理，这是向下滑时
-            move(-consume)
-        }
+//        if(dy < 0 && cardView.translationY < 0) {
+//            consume = max(dy.toFloat(), cardView.translationY) //同理，这是向下滑时
+//            move(-consume)
+//        }
         consumed[1] = consume.toInt() //consume[1]是y轴的消费距离
     }
 
