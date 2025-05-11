@@ -35,6 +35,12 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
         deleteLayout = findViewById(R.id.parent_delete)
     }
 
+//    private var click : (() -> Unit)? = null
+//    // 点击接口
+//    fun setOnCustomClickListener(cb: () -> Unit) {
+//        click = cb
+//    }
+
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         /**
          * 点击事件初始化必须在这里写
@@ -77,9 +83,18 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
                     topLayout.animate().translationX(0F)
                     deleteLayout.animate().translationX(0F)
                 }
+//                // 点击完成，执行回调(只能在ACTION_UP内执行)
+//                click?.invoke()
+//                // 为了支持无障碍、焦点等，调用 performClick()
+//                performClick()
             }
         }
         return true
     }
+
+//    override fun performClick(): Boolean {
+//        super.performClick()
+//        return true
+//    }
 
 }
