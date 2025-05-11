@@ -52,11 +52,13 @@ class MainActivity : BaseActivity() {
 
     private fun setNavigation() {
         //将fragment添加进适配器
-        val fragmentList: MutableList<Fragment> = ArrayList()
-        fragmentList.add(HomeFragment())
-        fragmentList.add(TimeFragment())
-        fragmentList.add(ChatFragment())
-        fragmentList.add(PersonFragment())
+        //采用Fragment回调的方法
+        val fragmentList = listOf(
+            { HomeFragment() },
+            { TimeFragment() },
+            { ChatFragment() },
+            { PersonFragment() }
+        )
         viewPager2.adapter = VP2Adapter(this, fragmentList)
         viewPager2.isUserInputEnabled = false
         navigationView.selectedItemId = R.id.bottom_home
