@@ -56,9 +56,10 @@ class CoinActivity : BaseActivity() {
     private fun initEvent() {
         mTabLayout.addTab(mTabLayout.newTab().setText("积分商店"))
         mTabLayout.addTab(mTabLayout.newTab().setText("积分任务"))
-        val fragmentList: MutableList<Fragment> = ArrayList()
-        fragmentList.add(MallFragment())
-        fragmentList.add(TaskFragment())
+        val fragmentList: List<() -> Fragment> = listOf(
+            { MallFragment() },
+            { TaskFragment() }
+        )
         viewPager2.adapter = VP2Adapter(this,fragmentList)
 
         TabLayoutMediator(mTabLayout, viewPager2) { tab, position ->
