@@ -67,11 +67,17 @@ class CustomParentLinearLayout(context: Context, attrs: AttributeSet?) : LinearL
     override fun onTouchEvent(event: MotionEvent): Boolean {
         when(event.action) {
             // 处理滑动事件
+            /**
+             * 这里实现的是两个按钮同时显现出来（最好在view里面设置一下elevation控制一下高度）
+             * 前面的view移动的距离为transitionX / 2(因为只占显示的一半)
+             * 后面的view移动距离为transitionX / 2 - view.width(因为初始位置在屏幕外view.width的距离，故要先移到贴近屏幕的位置再进行移动一半的操作)
+             * 这里是-view.width是因为左移是负的
+             */
             MotionEvent.ACTION_MOVE -> {
                 val transitionX = (event.x - initialX).coerceIn(-(topLayout.width + deleteLayout.width).toFloat(), 0F)
                 textLayout.translationX = transitionX
                 topLayout.translationX = transitionX
-                deleteLayout.translationX = transitionX
+                deleteLayout.translationX = transitionX / 2 - deleteLayout.width
             }
             MotionEvent.ACTION_UP,MotionEvent.ACTION_CANCEL -> {
                 if(-topLayout.translationX > (topLayout.width + deleteLayout.width) / 2) {

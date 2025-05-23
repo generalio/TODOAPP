@@ -64,6 +64,7 @@
         android:textSize="15dp"
         android:textColor="#FFFFFFFF"
         android:gravity="center_vertical"
+        android:elevation="0dp"
         android:background="#FFD700" />
 
     <TextView
@@ -75,6 +76,7 @@
         android:textSize="15dp"
         android:textColor="#FFFFFFFF"
         android:gravity="center_vertical"
+        android:elevation="3dp"
         android:background="#fd0823" />
 
 </com.generals.todoapp.ui.custom.CustomParentLinearLayout>
